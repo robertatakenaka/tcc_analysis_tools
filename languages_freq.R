@@ -1,3 +1,10 @@
+############################################################################
+#
+#  Identifica a frequência dos idiomas em resumos, títulos e palavras-chaves
+#
+############################################################################
+
+
 library("tidyverse")
 
 options(digits = 2)

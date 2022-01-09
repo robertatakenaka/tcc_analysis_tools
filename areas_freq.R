@@ -1,3 +1,9 @@
+############################################################################
+#
+#  Identifica as frequência de periódicos por área, categorias, e temas
+#
+############################################################################
+
 library("tidyverse")
 library("stringi")
 
