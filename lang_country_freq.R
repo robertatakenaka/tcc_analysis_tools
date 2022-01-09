@@ -1,3 +1,9 @@
+############################################################################
+#
+#  Identifica as frequência de idiomas do texto nas coleções dos países
+#
+############################################################################
+
 library("tidyverse")
 library("stringi")
 
