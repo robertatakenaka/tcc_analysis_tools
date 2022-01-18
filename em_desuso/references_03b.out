@@ -1,0 +1,56 @@
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+✔ tibble  3.1.2     ✔ dplyr   1.0.6
+✔ tidyr   1.1.3     ✔ stringr 1.4.0
+✔ readr   1.4.0     ✔ forcats 0.5.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+
+Attaching package: ‘reshape2’
+
+The following object is masked from ‘package:tidyr’:
+
+    smiths
+
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/journal/only_one_subject_area_journals.csv"
+[1] "Exact and Earth Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Exact and Earth Sciences.k.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Exact and Earth Sciences.freq.csv"
+                  Var1  Freq   total freq_perc
+1                 ____ 12937 1167922   0.01108
+2             2007____   302 1167922   0.00026
+3 2009___32_QUIM. NOVA   274 1167922   0.00023
+4             2003____   261 1167922   0.00022
+5             2008____   253 1167922   0.00022
+6             2013____   250 1167922   0.00021
+[1] "Health Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Health Sciences.k.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Health Sciences.freq.csv"
+        Var1  Freq   total freq_perc
+1       ____ 23678 8570599   0.00276
+2 2011___16_  3072 8570599   0.00036
+3 2012___17_  2497 8570599   0.00029
+4 2010___15_  2399 8570599   0.00028
+5   2013____  2195 8570599   0.00026
+6 2013___18_  2114 8570599   0.00025
+[1] "Human Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Human Sciences.k.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Human Sciences.freq.csv"
+      Var1  Freq   total freq_perc
+1     ____ 19814 3345775   0.00592
+2 2011____  1686 3345775   0.00050
+3 2012____  1684 3345775   0.00050
+4 2013____  1656 3345775   0.00049
+5 2010____  1618 3345775   0.00048
+6 2009____  1520 3345775   0.00045
+[1] "Linguistics, Letters and Arts"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Linguistics, Letters and Arts.k.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Linguistics, Letters and Arts.freq.csv"
+      Var1 Freq  total freq_perc
+1     ____  555 335959   0.00165
+2 2014____  194 335959   0.00058
+3 2012____  191 335959   0.00057
+4 2011____  179 335959   0.00053
+5 2013____  171 335959   0.00051
+6 2015____  145 335959   0.00043

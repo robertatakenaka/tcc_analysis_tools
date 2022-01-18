@@ -1,0 +1,62 @@
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+✔ tibble  3.1.2     ✔ dplyr   1.0.6
+✔ tidyr   1.1.3     ✔ stringr 1.4.0
+✔ readr   1.4.0     ✔ forcats 0.5.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+
+Attaching package: ‘reshape2’
+
+The following object is masked from ‘package:tidyr’:
+
+    smiths
+
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/journal/only_one_subject_area_journals.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Agricultural Sciences.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Agricultural Sciences.csv"
+[1] "Agricultural Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Agricultural Sciences.labeled.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Applied Social Sciences.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Applied Social Sciences.csv"
+[1] "Applied Social Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Applied Social Sciences.labeled.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Biological Sciences.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Biological Sciences.csv"
+[1] "Biological Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Biological Sciences.labeled.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Engineering.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Engineering.csv"
+[1] "Engineering"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Engineering.labeled.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Exact and Earth Sciences.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Exact and Earth Sciences.csv"
+[1] "Exact and Earth Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Exact and Earth Sciences.labeled.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Health Sciences.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Health Sciences.csv"
+[1] "Health Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Health Sciences.labeled.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Human Sciences.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Human Sciences.csv"
+[1] "Human Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Human Sciences.labeled.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Linguistics, Letters and Arts.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Linguistics, Letters and Arts.csv"
+[1] "Linguistics, Letters and Arts"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Linguistics, Letters and Arts.labeled.csv"
+ [1] X.1                  pid                  collection          
+ [4] pub_date             vol                  num                 
+ [7] suppl                page                 surname             
+[10] corpauth             doi                  journal             
+[13] article_title        source               issn                
+[16] thesis_date          thesis_loc           thesis_country      
+[19] thesis_degree        thesis_org           conf_date           
+[22] conf_loc             conf_country         conf_name           
+[25] conf_org             publisher_loc        publisher_country   
+[28] publisher_name       edition              source_author       
+[31] source_corpauth      citer_journal_id     X                   
+[34] issn_id              area                 freq                
+[37] ref_year_contrib_vol
+<0 linhas> (ou row.names de comprimento 0)

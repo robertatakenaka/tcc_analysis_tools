@@ -1,0 +1,90 @@
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+✔ tibble  3.1.2     ✔ dplyr   1.0.6
+✔ tidyr   1.1.3     ✔ stringr 1.4.0
+✔ readr   1.4.0     ✔ forcats 0.5.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+
+Attaching package: ‘reshape2’
+
+The following object is masked from ‘package:tidyr’:
+
+    smiths
+
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/journal/only_one_subject_area_journals.csv"
+[1] "Reading REFERENCES_SOURCE_FILE_PATH"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/source/csv_from_seq/references/references.csv"
+[1] "Labeling references"
+                           pid collection.x pub_date vol num suppl      page
+1 S1851-3743200600010000200001          arg 20040000  38  11       1083-1089
+2 S1851-3743200600010000200002          arg 19990000   3                5-28
+3 S1851-3743200600010000200003          arg 20030000                        
+4 S1851-3743200600010000200004          arg 20051000                        
+5 S1851-3743200600010000200005          arg 20040000                        
+6 S1851-3743200600010000200006          arg 20050713                        
+     surname corpauth doi           journal
+1     Arroyo                    Rev.Neurol.
+2 Carrizales              Scientiae Naturae
+3     Briggs                               
+4                                          
+5     Gordon                               
+6                                          
+                                                       article_title
+1                                             Encefalopatías tóxicas
+2 Efectos en salud asociados con la exposición a residuos peligrosos
+3              Indicators to improve children's environmental health
+4                                                                   
+5                                               Inheriting the world
+6                                                                   
+                                                       source issn thesis_date
+1                                                                             
+2                                                                             
+3                                                                             
+4 Salud Ambiental Infantil: Resumen de Actividades de EPA^les                 
+5        The atlas of children health and the environment^len                 
+6                                                                             
+  thesis_loc thesis_country thesis_degree thesis_org conf_date conf_loc
+1                                                                      
+2                                                                      
+3                                                                      
+4                                                                      
+5                                                                      
+6                                                                      
+  conf_country conf_name conf_org publisher_loc publisher_country
+1                                                                
+2                                                                
+3                                                                
+4                                                                
+5                                                                
+6                                                                
+  publisher_name edition source_author source_corpauth   issn_id   X
+1                                                      1851-3743 470
+2                                                      1851-3743 470
+3                                                      1851-3743 470
+4                                                      1851-3743 470
+5                                                      1851-3743 470
+6                                                      1851-3743 470
+  collection.y                area freq
+1           NA Biological Sciences    1
+2           NA Biological Sciences    1
+3           NA Biological Sciences    1
+4           NA Biological Sciences    1
+5           NA Biological Sciences    1
+6           NA Biological Sciences    1
+[1] "Classifying references"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Agricultural Sciences.csv"
+[1] "Agricultural Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Applied Social Sciences.csv"
+[1] "Applied Social Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Biological Sciences.csv"
+[1] "Biological Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Engineering.csv"
+[1] "Engineering"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Exact and Earth Sciences.csv"
+[1] "Exact and Earth Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Health Sciences.csv"
+[1] "Health Sciences"
+Erro: memória vetorial esgotada (limite atingido?)
+Execução interrompida

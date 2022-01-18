@@ -1,0 +1,63 @@
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+✔ tibble  3.1.2     ✔ dplyr   1.0.6
+✔ tidyr   1.1.3     ✔ stringr 1.4.0
+✔ readr   1.4.0     ✔ forcats 0.5.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+
+Attaching package: ‘reshape2’
+
+The following object is masked from ‘package:tidyr’:
+
+    smiths
+
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/journal/only_one_subject_area_journals.csv"
+[1] "Agricultural Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Agricultural Sciences.k.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Agricultural Sciences.freq.csv"
+                                                      Var1 Freq   total
+1                                                     ____ 2830 2527882
+2 1999____SISTEMA BRASILEIRO DE CLASSIFICAÇÃO DE SOLOS^LPT 1607 2527882
+3 2006____SISTEMA BRASILEIRO DE CLASSIFICAÇÃO DE SOLOS^LPT 1404 2527882
+4              1992____REGRAS PARA ANÁLISE DE SEMENTES^LPT 1159 2527882
+5         1997____MANUAL DE MÉTODOS DE ANÁLISE DE SOLO^LPT 1118 2527882
+6                                         1962_MAGUIRE__2_ 1060 2527882
+  freq_perc
+1   0.00112
+2   0.00064
+3   0.00056
+4   0.00046
+5   0.00044
+6   0.00042
+[1] "Applied Social Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Applied Social Sciences.k.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Applied Social Sciences.freq.csv"
+      Var1  Freq   total freq_perc
+1     ____ 13078 2615592   0.00500
+2 2013____  2184 2615592   0.00083
+3 2012____  2106 2615592   0.00081
+4 2014____  2062 2615592   0.00079
+5 2011____  1925 2615592   0.00074
+6 2010____  1775 2615592   0.00068
+[1] "Biological Sciences"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Biological Sciences.k.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Biological Sciences.freq.csv"
+                                 Var1 Freq   total freq_perc
+1                                ____ 6257 1812065   0.00345
+2 1999____BIOSTATISTICAL ANALYSIS^LEN  708 1812065   0.00039
+3                    2000_MYERS__403_  668 1812065   0.00037
+4                     2001_HAMMER__4_  587 1812065   0.00032
+5                            2010____  518 1812065   0.00029
+6                            2012____  487 1812065   0.00027
+[1] "Engineering"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Engineering.k.csv"
+[1] "/Users/roberta.takenaka/github.com/takenakaroberta/mba_ds/tcc_datasets/analysis/references/Engineering.freq.csv"
+      Var1 Freq   total freq_perc
+1     ____ 3548 1043748   0.00340
+2 2011____  415 1043748   0.00040
+3 2013____  376 1043748   0.00036
+4 2012____  350 1043748   0.00034
+5 2014____  346 1043748   0.00033
+6 2010____  345 1043748   0.00033
