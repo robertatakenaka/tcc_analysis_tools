@@ -24,6 +24,7 @@ abstracts_lang_freq_graphic <- function(langs_freq_file_path, langs_with_codes_t
         "Quantidade de resumos por idioma | Total de", ds_langs_freq$total[1], "resumos"
     )
     # gera um gráfico de barras com a quantidade de obs em cada idioma
+    
     g <- sorted_hor_bar(ds_langs_freq, ds_langs_freq$lang_text,
                         ds_langs_freq$n, ds_langs_freq$freq,
                         h_text=text) %>%
@@ -46,11 +47,11 @@ ABSTRACTS_ANALYSIS_ENGLISH_PRESENCE_FILE_PATH <- Sys.getenv("ABSTRACTS_ANALYSIS_
 
 
 output_folder_path = dirname(ABSTRACTS_ANALYSIS_LANG_FILE_PATH)
-filename_prefix = "abstracts__langs_freq_g"
-abstracts_lang_freq_graphic(
+filename_prefix = "abstracts__langs_freq_gxxx"
+gg <- abstracts_lang_freq_graphic(
     ABSTRACTS_ANALYSIS_LANG_FILE_PATH,
     ABSTRACTS_ANALYSIS_LANG_TRANSLATED_FILE_PATH,
     output_folder_path,
     filename_prefix
 )
-
+print(gg)

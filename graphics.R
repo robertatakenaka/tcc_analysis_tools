@@ -61,45 +61,6 @@ sorted_hor_bar <- function(ds, texts, numbers, perc, v_text="", h_text="") {
     return (g)
 }
 
-sorted_hor_bar_groups <- function(ds, texts, numbers, perc, v_text="", h_text="", reorder_by_text=FALSE) {
-
-    if (reorder_by_text == TRUE) {
-        ds <- ds %>%
-            mutate(texts = fct_reorder(texts, desc(texts)))
-        direction <- 1
-    } else {
-        ds <- ds %>%
-            mutate(texts = fct_reorder(texts, desc(perc)))
-        direction <- -1
-    }
-    ds <- ds %>%
-        mutate(percent=perc*100) %>%
-        mutate(display_numbers = sprintf("%1.0f (%0.2f%%)", numbers, percent))
-
-    print(head(ds))
-    g <- ds %>%
-        ggplot() +
-        geom_bar(
-            aes(x=texts, y=percent, fill=numbers),
-            stat="identity", 
-            position=position_dodge(width = 2),
-            width=0.2
-        ) +
-        geom_text(
-            aes(x=texts, y=percent, label=display_numbers),
-            hjust = -0.1, size = 3, vjust = 0, 
-            inherit.aes = TRUE
-        ) +
-        
-        viridis::scale_fill_viridis(discrete = TRUE, direction = direction) +
-        coord_flip() +
-        xlab(v_text) +
-        ylab(h_text) + 
-        theme_linedraw() +
-        expand_limits(y = c(-10, max(ds$percent)*1.8))
-
-    return (g)
-}
 
 save_g <- function(graphic, file_path){
     ext = file_ext(file_path)
