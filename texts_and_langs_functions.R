@@ -188,9 +188,23 @@ create_files <- function(ds, folder_path) {
 
 
 add_lang_text <- function(ds) {
-    translations <- read_csv_file('LANGS')
+    translations <- read_csv_file('LANGS.csv')
     ds <- inner_join(ds, translations, by="lang")
     ds[is.na(ds)] <- 0
     return (ds)
 }
 
+
+create_pid_list <- function(ds, file_path="") {
+    pids <- ds %>%
+            mutate(correct=case_when(str_length(pid) == 23 ~ TRUE,
+                                         TRUE ~ FALSE)) %>%
+            filter(correct == TRUE) %>%
+            select(pid) %>%
+            distinct()
+    if (file_path != "") {
+        write_csv_file(pids, file_path)
+    }
+    print(paste("Total ", nrow(pids)))
+    return (pids)
+}
