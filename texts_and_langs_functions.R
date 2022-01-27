@@ -19,6 +19,8 @@ read_csv_file <- function(dataset_path) {
     print(dataset_path)
     ds <- read.csv(dataset_path, header=TRUE, sep=",") %>%
             distinct()
+
+    print(paste(str(nrow(ds)), "rows"))
     print("done")
     return (ds)
 }
@@ -28,7 +30,10 @@ write_csv_file <- function(ds, dataset_path) {
     print(dataset_path)
     path <- dirname(dataset_path)
     dir.create(path, recursive=TRUE, showWarnings=FALSE)
-    write.csv(ds, dataset_path)
+    ds <- ds %>%
+        distinct() %>%
+        write.csv(dataset_path)
+    print(paste(str(nrow(ds)), "rows"))
     return (ds)
 }
 
