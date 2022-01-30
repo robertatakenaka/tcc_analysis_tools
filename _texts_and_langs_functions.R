@@ -15,37 +15,37 @@ options(scipen = 999)
 
 read_csv_file <- function(dataset_path) {
     # Lê os dados de um arquivo CSV
-    print("Reading ...")
-    print(dataset_path)
+    print(paste("Reading:", dataset_path))
     ds <- read.csv(dataset_path, header=TRUE, sep=",") %>%
             distinct()
 
-    print(paste(str(nrow(ds)), "rows"))
-    print("done")
+    print(head(ds))
+    print(paste(str(nrow(ds)[0]), "rows"))
     return (ds)
 }
 
 
 write_csv_file <- function(ds, dataset_path) {
-    print(dataset_path)
     path <- dirname(dataset_path)
     dir.create(path, recursive=TRUE, showWarnings=FALSE)
     ds <- ds %>%
-        distinct() %>%
-        write.csv(dataset_path)
+        distinct()
+    write.csv(ds, dataset_path)
+    print(dataset_path)
     print(paste(str(nrow(ds)), "rows"))
     return (ds)
 }
 
 
-load_journal_subject_areas_ds <- function(ds_file_path) {
-    # cria a coluna issn_id com o ID do periódico (ISSN ID) que cita a referencia
+load_journal_subject_areas_ds <- function(ds_file_path) {    
+    translations <- read_csv_file('subject_areas_pt.csv')
 
     # O valor do issn_id corresponde a substr(ds$pid, 2, 10)
     ds <- read_csv_file(ds_file_path) %>%
         rename("subject_area"="value", "issn_id"="key") %>%
-        select(c("subject_area", "issn_id"))
-    
+        inner_join(translations, by="subject_area") %>%
+        select(c("subject_area_pt", "issn_id")) %>%
+        rename("subject_area"="subject_area_pt")
     print(head(ds))
     return (ds)
 }
@@ -53,12 +53,27 @@ load_journal_subject_areas_ds <- function(ds_file_path) {
 
 add_subject_area <- function(ds, ds_journal_with_subject_areas) {
     # O valor do issn_id corresponde a substr(ds$pid, 2, 10)
+    
     ds <- mutate(ds, issn_id=substr(ds$pid, 2, 10))
 
     # Adiciona ao dataset as áreas temáticas vinculadas ao `issn_id`
     # Cada `issn_id` (periódico) pode estar associado a um ou mais áreas temáticas
     ds <- inner_join(ds, ds_journal_with_subject_areas, by="issn_id")
+    return (ds)
+}
 
+
+translate_subject_areas <- function(ds) {
+    # cria a coluna issn_id com o ID do periódico (ISSN ID) que cita a referencia
+    
+    translations <- read_csv_file('subject_areas_pt.csv')
+    # O valor do issn_id corresponde a substr(ds$pid, 2, 10)
+    ds <- ds %>%
+        inner_join(translations, by="subject_area") %>%
+        rename("subject_area_en"="subject_area") %>%
+        rename("subject_area"="subject_area_pt")
+
+    print(head(ds))
     return (ds)
 }
 
@@ -213,3 +228,4 @@ create_pid_list <- function(ds, file_path="") {
     print(paste("Total ", nrow(pids)))
     return (pids)
 }
+
