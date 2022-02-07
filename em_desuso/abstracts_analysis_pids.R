@@ -1,0 +1,23 @@
+# ==================================================
+# 
+# Análise do conjunto de dados que tem texto e idioma
+# 
+# ==================================================
+
+source("texts_and_langs_functions.R")
+
+readRenviron(".appenv")
+
+ABSTRACTS_ANALYSIS_LANG_TRANSLATED_FILE_PATH <- Sys.getenv("ABSTRACTS_ANALYSIS_LANG_TRANSLATED_FILE_PATH")
+ABSTRACTS_ANALYSIS_LANG_FILE_PATH <- Sys.getenv("ABSTRACTS_ANALYSIS_LANG_FILE_PATH")
+ABSTRACTS_ANALYSIS_LANG_IN_AREA_FILE_PATH <- Sys.getenv("ABSTRACTS_ANALYSIS_LANG_IN_AREA_FILE_PATH")
+ABSTRACTS_SOURCE_CSV_FILE_PATH <- Sys.getenv("ABSTRACTS_SOURCE_CSV_FILE_PATH")
+
+ABSTRACTS_ANALYSIS_PIDS_FILE_PATH <- Sys.getenv("ABSTRACTS_ANALYSIS_PIDS_FILE_PATH")
+
+ABSTRACTS_ANALYSIS_ENGLISH_PRESENCE_FILE_PATH <- Sys.getenv("ABSTRACTS_ANALYSIS_ENGLISH_PRESENCE_FILE_PATH")
+
+
+ds <- read_csv_file(ABSTRACTS_SOURCE_CSV_FILE_PATH)
+pids <- create_pid_list(ds, ABSTRACTS_ANALYSIS_PIDS_FILE_PATH)
+

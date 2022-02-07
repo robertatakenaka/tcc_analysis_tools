@@ -36,6 +36,7 @@ draw_graphic <- function(ds_g, title, file_path) {
         theme_bw() +
         theme(
             legend.position = "none",
+            aspect.ratio=2/3,
             plot.margin=margin(2,2,2,2),
             panel.border = element_blank(),
             panel.spacing = unit(0.1, "lines"),
@@ -78,7 +79,7 @@ if (file.exists(GRAPHIC_CSV_FILE_PATH)) {
         mutate(display_numbers=sprintf("%1.0f (%0.2f%%)", n_langs, perc_n_langs_in_total)) %>%
             write_csv_file(GRAPHIC_TMP_CSV_FILE_PATH)
     ds_g <- ds_g %>%
-        select(lang_text, perc_n_langs_in_total, display_numbers) %>%
+        select(lang_text, n_langs, perc_n_langs_in_total, display_numbers) %>%
             write_csv_file(GRAPHIC_CSV_FILE_PATH)
 }
 print("numbers!!!!")

@@ -8,7 +8,7 @@ library(tidyverse)
 library(stringi)
 source("my_functions_files.R")
 source("my_functions_translated_codes.R")
-source("graphics.R")
+source("my_functions_graphics.R")
 
 options(digits = 2)
 options(scipen = 999)
@@ -16,18 +16,15 @@ options(scipen = 999)
 
 draw_graphic <- function(ds_g, title, file_path) {
     
-    # Create data (could be way easier but it's late)
-    # value1 <- abs(rnorm(6))*2
     don <- data.frame(
-      x=ds_g$lang_text, 
-      val=ds_g$perc_n_langs_in_area,
-      grp=ds_g$subject_area,
-      display=ds_g$display_numbers
-      ) %>%
-      arrange(desc(x))
+        x=ds_g$lang_text, 
+        val=ds_g$perc_n_langs_in_area,
+        grp=ds_g$subject_area,
+        display=ds_g$display_numbers
+        ) %>%
+        arrange(val) %>%
+        mutate(x = fct_reorder(x, val))
 
-
-    # With a bit more style
     g <- don %>%
         ggplot() +
         geom_segment( aes(x=x, xend=x, y=0, yend=val), color="black") +
@@ -41,6 +38,7 @@ draw_graphic <- function(ds_g, title, file_path) {
         expand_limits(y = c(-0.5, don$val+20)) +
         theme_bw() +
         theme(
+            aspect.ratio=1/3,
             legend.position = "none",
             plot.margin=margin(2,2,2,2),
             panel.border = element_blank(),
@@ -63,7 +61,6 @@ SOURCE_WITH_LANG_TEXT_AND_SUBJECT_AREA_CSV_FILE_PATH <- Sys.getenv("SOURCE_WITH_
 GRAPHIC_CSV_FILE_PATH <- Sys.getenv("GRAPHIC_CSV_FILE_PATH")
 GRAPHIC_TMP_CSV_FILE_PATH <- Sys.getenv("GRAPHIC_TMP_CSV_FILE_PATH")
 GRAPHIC_FILE_PATH <- Sys.getenv("GRAPHIC_FILE_PATH")
-
 
 if (file.exists(GRAPHIC_CSV_FILE_PATH)) {
     ds_g <- read_csv_file(GRAPHIC_CSV_FILE_PATH)
