@@ -1,6 +1,6 @@
 # ==================================================
 # 
-# Análise do conjunto de dados que tem texto e idioma
+# Figure 07 - COVID sample analysis
 # 
 # ==================================================
 library(dplyr)

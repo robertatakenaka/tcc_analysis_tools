@@ -68,6 +68,10 @@ ds_papers_csv <- read_csv_file(PAPERS_CSV_FILE_PATH)
 
 ds_papers <- ds_papers_csv
 
+ds_papers["no_en"] <- NULL
+ds_papers["en_only"] <- NULL
+ds_papers["with_en"] <- NULL
+
 ########################################
 #
 #     CLUSTER HIERARQUICO - MCDonald
@@ -75,7 +79,7 @@ ds_papers <- ds_papers_csv
 ########################################
 
 #transformar o nome dos artigos em linhas
-rownames(ds_papers) <- ds_papers[,1]
+#rownames(ds_papers) <- ds_papers[,1]
 ds_papers <- ds_papers[,-1]
 
 #Padronizar variaveis
@@ -98,11 +102,11 @@ fviz_nbclust(ds_papers.padronizado, FUN = hcut, method = "wss")
 
 
 #criando 4 grupos de artigos
-grupo_4 <- cutree(cluster.hierarquico, k = 5)
-table(grupo_4)
+ds_with_4groups <- cutree(cluster.hierarquico, k = 5)
+table(ds_with_4groups)
 
 #transformando em data frame a saida do cluster
-grupos_de_artigos <- data.frame(grupo_4)
+grupos_de_artigos <- data.frame(ds_with_4groups)
 
 #juntando com a base original
 Base_artigos_fim <- cbind(ds_papers, grupos_de_artigos)
@@ -114,7 +118,7 @@ Base_artigos_fim <- cbind(ds_papers, grupos_de_artigos)
 # no_en,en_only,with_en
 
 mediagrupo <- Base_artigos_fim %>% 
-  group_by(grupo_4) %>% 
+  group_by(ds_with_4groups) %>% 
   summarise(n = n(),
             refs = mean(refs), 
             refs_with_doi = mean(refs_with_doi), 
@@ -122,11 +126,9 @@ mediagrupo <- Base_artigos_fim %>%
             score_gt_79 = mean(score_gt_79), 
             score_gt_69 = mean(score_gt_69), 
             score_gt_59 = mean(score_gt_59),
-            score_gt_0_59 = mean(score_gt_0_59), 
-            score_none = mean(score_none),
-            no_en = mean(no_en), 
-            with_en = mean(with_en), 
-            en_only = mean(en_only) )
+            score_gt_0.59 = mean(score_gt_0.59), 
+            score_none = mean(score_none)
+  )
 mediagrupo
 
 
@@ -151,9 +153,9 @@ ds_papers.k5 <- kmeans(ds_papers.padronizado, centers = 5)
 
 #Criar graficos
 G1 <- fviz_cluster(ds_papers.k2, geom = "point", data = ds_papers.padronizado) + ggtitle("k = 2")
-G2 <- fviz_cluster(ds_papers.k3, geom = "point",  data = ds_papers.padronizado) + ggtitle("k = 3")
-G3 <- fviz_cluster(ds_papers.k4, geom = "point",  data = ds_papers.padronizado) + ggtitle("k = 4")
-G4 <- fviz_cluster(ds_papers.k5, geom = "point",  data = ds_papers.padronizado) + ggtitle("k = 5")
+G2 <- fviz_cluster(ds_papers.k3, geom = "point", data = ds_papers.padronizado) + ggtitle("k = 3")
+G3 <- fviz_cluster(ds_papers.k4, geom = "point", data = ds_papers.padronizado) + ggtitle("k = 4")
+G4 <- fviz_cluster(ds_papers.k5, geom = "point", data = ds_papers.padronizado) + ggtitle("k = 5")
 
 #Imprimir graficos na mesma tela
 grid.arrange(G1, G2, G3, G4, nrow = 2)
@@ -161,12 +163,12 @@ grid.arrange(G1, G2, G3, G4, nrow = 2)
 #VERIFICANDO ELBOW 
 fviz_nbclust(ds_papers.padronizado, kmeans, method = "wss")
 
-ds_papers.k10 <- kmeans(ds_papers.padronizado, centers = 10)
-G10 <- fviz_cluster(ds_papers.k10, geom = "point",  data = ds_papers.padronizado) + ggtitle("k = 10")
-G10
+ds_papers.k6 <- kmeans(ds_papers.padronizado, centers = 6)
+G6 <- fviz_cluster(ds_papers.k6, geom = "point",  data = ds_papers.padronizado) + ggtitle("k = 6")
+G6
 
 
-grupos <- ds_papers.k10
+grupos <- ds_papers.k6
 papers_scaled <- ds_papers.padronizado
 
 papers_df <- as.data.frame(papers_scaled) %>% rownames_to_column()

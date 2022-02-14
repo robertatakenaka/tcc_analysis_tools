@@ -1,6 +1,6 @@
 # ==================================================
 # 
-# Análise do conjunto de dados que tem texto e idioma
+# Figures 02-05 Areas and Langs
 # 
 # ==================================================
 source("my_functions__abstracts__lang_area.R")

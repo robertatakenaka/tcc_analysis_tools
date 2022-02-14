@@ -1,6 +1,6 @@
 # ==================================================
 # 
-# Análise da presença do idioma inglês de resumos
+# Figure 06 - English presence
 # 
 # ==================================================
 
@@ -71,7 +71,7 @@ create_area_and_classification_files <- function(ds) {
             file_path <- file.path(folder_path, paste(paste(area, x, sep="_"), "csv", sep="."))
             if (!file.exists(file_path)) {
                 ds_partial <- ds %>%
-                    dplyr::filter(ds$classification==x & ds$subject_area==area) %>%
+                    dplyr::filter(classification==x & subject_area==area) %>%
                     write_csv_file(file_path)
             }
         }

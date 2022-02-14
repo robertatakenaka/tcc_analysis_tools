@@ -1,3 +1,10 @@
+# ==================================================
+# 
+# Figura 1. Quantidade de resumos por idioma
+# 
+# ==================================================
+
+
 library(dplyr)
 library(tidyverse)
 library(stringi)

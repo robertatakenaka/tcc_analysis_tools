@@ -32,10 +32,9 @@ options(digits = 2)
 options(scipen = 999)
 
 
-# original columns
+# papers.csv - original columns
 # pid,refs,refs_with_doi,connections,score_gt_89,score_gt_79,score_gt_69,
 # score_gt_59,score_gt_0_59,score_none,no_en,en_only,with_en
-
 
 xray <- function(ds_papers) {
     
@@ -125,7 +124,7 @@ max_score_ranges_papers <- function(ds_papers) {
             score_gt_79 > 0 ~ 'Total de artigos cuja pontuação mais alta é entre 80-89',
             score_gt_69 > 0 ~ 'Total de artigos cuja pontuação mais alta é entre 70-79',
             score_gt_59 > 0 ~ 'Total de artigos cuja pontuação mais alta é entre 60-69',
-            score_gt_0.59 > 0 ~ 'Total de artigos cuja pontuação mais alta é entre 0-59',
+            score_gt_0_59 > 0 ~ 'Total de artigos cuja pontuação mais alta é entre 0-59',
             TRUE ~ 'Total de artigos sem pontuação',
         )) %>%
         group_by(max_score_ranges) %>%
@@ -167,3 +166,17 @@ english_presence_papers <- function(ds_papers) {
     return (report)
 }
 
+
+t_sources <- function(ds_sources) {
+    d <- ds_sources %>%
+        mutate(linked=case_when(
+            reflinks > 1 ~ "Fonte conecta artigos científicos",
+            TRUE ~ "Fonte encontrada em apenas uma referência")) %>%
+        group_by(linked) %>%
+        summarise(n=n()) %>%
+        mutate(total=sum(n)) %>%
+        mutate(perc=100*n/total) %>%
+        select(linked, perc, n, total) %>%
+        distinct()
+    return (d)
+}
