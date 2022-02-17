@@ -78,8 +78,11 @@ xray <- function(ds_papers) {
     labels <- c(labels, 'Total de conexões por similaridade semântica 60-69%')
     values <- c(values, sum(ds_papers$score_gt_59))
 
-    labels <- c(labels, 'Total de conexões por similaridade semântica < 60%')
-    values <- c(values, sum(ds_papers$score_gt_0_59))
+    labels <- c(labels, 'Total de conexões por similaridade semântica 1-60%')
+    values <- c(values, sum(ds_papers$score_gt_1_59))
+
+    labels <- c(labels, 'Total de conexões por similaridade semântica < 1%')
+    values <- c(values, sum(ds_papers$score_lt_1))
 
     df <- data.frame(labels=labels, values=values)
 
@@ -124,7 +127,8 @@ max_score_ranges_papers <- function(ds_papers) {
             score_gt_79 > 0 ~ 'Total de artigos cuja pontuação mais alta é entre 80-89',
             score_gt_69 > 0 ~ 'Total de artigos cuja pontuação mais alta é entre 70-79',
             score_gt_59 > 0 ~ 'Total de artigos cuja pontuação mais alta é entre 60-69',
-            score_gt_0_59 > 0 ~ 'Total de artigos cuja pontuação mais alta é entre 0-59',
+            score_gt_1_59 > 0 ~ 'Total de artigos cuja pontuação mais alta é entre 0-59',
+            score_lt_1 > 0 ~ 'Total de artigos cuja pontuação mais alta é entre 0-59',
             TRUE ~ 'Total de artigos sem pontuação',
         )) %>%
         group_by(max_score_ranges) %>%
