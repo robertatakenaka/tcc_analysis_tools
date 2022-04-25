@@ -8,9 +8,9 @@
 library(dplyr)
 library(tidyverse)
 library(stringi)
-source("my_functions_files.R")
-source("my_functions_translated_codes.R")
-source("my_functions_graphics.R")
+source("libs/my_functions_files.R")
+source("libs/my_functions_translated_codes.R")
+source("libs/my_functions_graphics.R")
 
 options(digits = 2)
 options(scipen = 999)

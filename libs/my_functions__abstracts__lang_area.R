@@ -53,8 +53,6 @@ read_graphic_csv_file <- function() {
 
 draw_graphic <- function(ds_g, title, file_path, nrow=1, arg_xlab="", arg_ylab="", aspect_ratio=1) {
     
-    # Create data (could be way easier but it's late)
-    # value1 <- abs(rnorm(6))*2
     don <- data.frame(
             langs=ds_g$lang_text, 
             val=as.numeric(ds_g$perc_n_langs_in_area),

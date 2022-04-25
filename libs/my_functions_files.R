@@ -12,7 +12,7 @@ read_csv_file <- function(dataset_path) {
     ds <- read.csv(dataset_path, header=TRUE, sep=",") %>%
             distinct()
 
-    print(head(ds))
+    # print(head(ds))
     print(paste(nrow(ds), "rows"))
     return (ds)
 }
@@ -26,7 +26,7 @@ write_csv_file <- function(ds, dataset_path) {
     write.csv(ds, dataset_path)
 
     print(paste("Writing:", dataset_path))
-    print(head(ds))
-    print(paste(str(nrow(ds)), "rows"))
+    # print(head(ds))
+    # print(paste(str(nrow(ds)), "rows"))
     return (ds)
 }

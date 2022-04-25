@@ -43,7 +43,15 @@ save_g <- function(graphic, file_path){
 
 xxx <- function(graphic, file_path) {
 
-    ggsave(filename = file_path, plot = graphic)
+    ggsave(filename = file_path, plot = graphic, width=30, height=15, units="cm")
+
+    return (graphic)
+
+}
+
+graphics <- function(graphic, file_path, width=40, height=40) {
+
+    ggsave(filename = file_path, plot = graphic, width=width, height=height, units="cm", dpi = 600)
 
     return (graphic)
 
