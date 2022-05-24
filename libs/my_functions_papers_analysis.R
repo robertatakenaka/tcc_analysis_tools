@@ -24,9 +24,9 @@
 library("tidyverse") #pacote para manipulacao de dados
 library("dplyr")
 
-source("my_functions_files.R")
-source("my_functions_translated_codes.R")
-source("my_functions_graphics.R")
+source("./libs/my_functions_files.R")
+source("./libs/my_functions_translated_codes.R")
+source("./libs/my_functions_graphics.R")
 
 options(digits = 2)
 options(scipen = 999)
@@ -167,7 +167,7 @@ connections_papers <- function(ds_papers) {
         select(labels, values) %>%
         distinct()
         
-    print(head(report))
+    # print(head(report))
     return (report)
 }
 
@@ -193,7 +193,7 @@ max_score_ranges_papers <- function(ds_papers) {
         summarise(tt=n()) %>%
         mutate(total=display_numbers(tt, candidatos)) %>%
         select(max_score_ranges, total)
-    print(head(report))
+    # print(head(report))
     return (report)
 }
 
@@ -209,7 +209,7 @@ highest_scores_papers <- function(ds_papers) {
         ungroup() %>%
         distinct() %>%
         select(papers_with_highest_scores, total)
-    print(head(report))
+    # print(head(report))
     return (report)
 }
 
@@ -225,7 +225,7 @@ english_presence_papers <- function(ds_papers) {
         group_by(en_presence) %>%
         summarise(total=n()) %>%
         select(en_presence, total)
-    print(head(report))
+    # print(head(report))
     return (report)
 }
 
@@ -266,6 +266,6 @@ t_sources__doi_vs_reflinks <- function(ds_sources) {
         dplyr::select(labels, values) %>%
         distinct()
     d <- data.frame(labels=d$labels, values=d$values)
-    print(d)
+    #print(d)
     return (d)
 }

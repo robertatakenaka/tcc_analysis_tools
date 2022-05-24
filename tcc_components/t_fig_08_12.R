@@ -5,14 +5,41 @@
 #
 #########################################################
 
+# install.packages("ggplot2")
+# install.packages("gridExtra")
+# install.packages("tidyverse")
+# install.packages("hrbrthemes")
+# install.packages("cowplot")
+# install.packages("viridis")
+
 library(ggplot2)
 library(gridExtra)
 library(tidyverse)
 library(hrbrthemes)
+
 library(cowplot)
 library(viridis)
-source("libs/my_functions_papers_analysis.R")
-source("libs/my_functions_graphics.R")
+
+source("./libs/my_functions_papers_analysis.R")
+source("./libs/my_functions_graphics.R")
+
+
+one_abstract_papers_data <- function(ds) {
+    # a_pid,c_pid,real_a_pid,real_c_pid,same,c_score,c_score_none
+    # S0004-05922014000300016_it,S0004-05922014000300016_en,S0004-05922014000300016,S0004-05922014000300016,1,0.76,0
+    # S0004-05922014000300016_en,S0004-05922014000300016_it,S0004-05922014000300016,S0004-05922014000300016,1,0.76,0
+
+    ds <- ds %>%
+        mutate(real_a_pid=substr(pid, 1, 23))
+
+    pids <- ds %>%
+        group_by(real_a_pid) %>%
+        mutate(
+            abstracts=n(),
+        ) %>%
+        filter(abstracts==1 | same == 0)
+    return (ds)
+}
 
 
 papers_add_data <- function(ds) {
@@ -32,7 +59,7 @@ papers_add_data <- function(ds) {
         filter(abstracts==1) %>%
         select(real_a_pid) %>%
         distinct() %>%
-        write_csv_file("s3_pids.csv")
+        write_csv_file("_rep_/s3_with_one_abstract_only.csv")
 
     ds <- ds %>%
         group_by(real_a_pid) %>%
@@ -40,6 +67,7 @@ papers_add_data <- function(ds) {
             min_expected_connections_by_semantic_similarity=n()-1,
             abstracts=n(),
         ) %>%
+        mutate(sum(min_expected_connections_by_semantic_similarity))
         ungroup()
     print(head(ds))
     return (ds)
@@ -65,14 +93,18 @@ g_papers_profiles <- function(ds, g_path) {
     g <- ds %>%
         ggplot(aes(x=abstracts)) +
         geom_bar(aes(y = after_stat(count), x=abstracts, fill=as.factor(abstracts)), stat = 'count') +
-        geom_text(aes(label = after_stat(count)), vjust = -1, stat = "count") +
+        geom_text(aes(label = after_stat(count)), vjust = -1, stat = "count", size=3) +
         labs(
             x = "Quantidade de resumos",
             y = "Quantidade de artigos"
         ) +
+        # scale_y_continuous(trans='log2') +
+        # coord_flip() + 
         theme_bw() +
-        scale_fill_viridis_d(option = 'magma') +
-        theme(text = element_text(size = 15), legend.position = "none")
+        scale_fill_viridis_d(option = 'viridis') +
+        theme(
+            plot.margin = margin(0.9, 0.9, 0.9, 0.9, "cm"),
+            text = element_text(size = 20), legend.position = "none")
     
     save_g(g, g_path)
     return (g)
@@ -88,10 +120,39 @@ get_langs_pairs_and_scores <- function(ds) {
     # S0004-282X1965000200001_pt,S0004-282X1965000200001_de,S0004-282X1965000200001,S0004-282X1965000200001,1,0.89,0
     # S0004-282X1974000200003_pt,S0004-282X1974000200003_en,S0004-282X1974000200003,S0004-282X1974000200003,1,0.87,0
     # S0004-282X1974000200003_pt,S0004-282X1974000200003_de,S0004-282X1974000200003,S0004-282X1974000200003,1,0.89,0
+
     ds <- ds %>%
-        mutate(la = substr(a_pid, 25, 27), lb=substr(c_pid, 25, 27)) %>%
-        mutate(l1=case_when(la < lb ~ la, TRUE ~ lb), l2=case_when(la < lb ~ lb, TRUE ~ la)) %>%
-        select(l1, l2, c_score, same)
+        select(a_pid, c_pid, same, c_score)
+    ds <- ds %>%
+        mutate(to=a_pid, from=c_pid) %>%
+    # ds_to <- ds %>%
+    #     mutate(from=a_pid, to=c_pid)
+    # ds <- rbind(ds_from, ds_to) %>%
+        select(
+            from, to,
+            same,
+            c_score,
+        ) %>%
+        unique()
+
+    ds <- ds %>%
+        mutate(lang_from = substr(from, 25, 27), lang_to=substr(to, 25, 27))
+
+
+    translations <- read_csv_file('./datasets/LANGS.csv')
+    ds <- ds %>% 
+        rename(lang=lang_from) %>%
+        inner_join(translations, by="lang") %>%
+        rename(lt1=lang_text) %>%
+        select(from, to, same, c_score, lt1, lang_to)
+
+    ds <- ds %>% 
+        rename(lang=lang_to) %>%
+        inner_join(translations, by="lang") %>%
+        rename(lt2=lang_text) %>%
+        select(from, to, same, c_score, lt1, lt2)
+
+
     return (ds)
 }
 
@@ -105,28 +166,13 @@ add_median_min_max <- function(ds) {
     # S0004-282X1974000200003_pt,S0004-282X1974000200003_en,S0004-282X1974000200003,S0004-282X1974000200003,1,0.87,0
     # S0004-282X1974000200003_pt,S0004-282X1974000200003_de,S0004-282X1974000200003,S0004-282X1974000200003,1,0.89,0
 
-    translations <- read_csv_file('LANGS.csv')
-
-    ds <- ds %>% 
-        rename(lang=l1) %>%
-        inner_join(translations, by="lang") %>%
-        rename(lt1=lang_text)  %>%
-        select(lt1, l2, c_score, same) 
-
-    ds <- ds %>% 
-        rename(lang=l2) %>%
-        inner_join(translations, by="lang") %>%
-        rename(lt2=lang_text)  %>%
-        select(lt1, lt2, c_score, same)
-
     ds <- ds %>%
         group_by(lt1, lt2, same) %>%
-        summarize(
+        summarise(
             median=median(c_score),
             min=min(c_score),
             max=max(c_score),
             n=n(),
-            c_score=c_score,
         ) %>%
         mutate(text = paste0("min: ", min, "\n", "max: ", max, "\n", "n: ", n)) %>%
         ungroup()
@@ -143,26 +189,32 @@ g_langs_pairs_and_scores <- function(ds, g_path, title, subtitle, legend, text_c
     # S0004-282X1974000200003_pt,S0004-282X1974000200003_en,S0004-282X1974000200003,S0004-282X1974000200003,1,0.87,0
     # S0004-282X1974000200003_pt,S0004-282X1974000200003_de,S0004-282X1974000200003,S0004-282X1974000200003,1,0.89,0
 
+    text_size <- 38
+    cell_size <- 9.5
+    if (ds$same[1] == 1){
+        cell_size <- 7
+        # text_size <- 21
+    }
     ds['c_score'] <- NULL
     g <- ds %>%
         distinct() %>%
-        ggplot(aes(lt1, lt2, fill=metric)) + 
+        ggplot(aes(x=reorder(lt1, desc(lt1)), y=lt2, fill=metric)) + 
         geom_tile(color = text_color) +
-        geom_text(aes(label = metric), color = text_color , size = 10) +
+        geom_text(aes(label = metric), color = text_color, size=cell_size) +
         scale_fill_viridis(option="turbo", discrete=FALSE) +
+        coord_flip() + 
         # scale_fill_viridis_c() +
         labs(
             title = title,
             subtitle = subtitle,
-            x = "",
-            y = ""
+            x = "De",
+            y = "Para"
         ) +
         theme(
-            plot.margin = margin(0.1, 0.1, 0.1, 0.1, "cm"),
+            plot.margin = margin(0.9, 0.9, 0.9, 0.9, "cm"),
             legend.position = "none",
-            title = element_text(size=38),
-            axis.text.x = element_text(angle = 90, size = 36),
-            axis.text.y = element_text(size = 36),
+            text = element_text(size=text_size),
+            axis.text.x = element_text(angle = 90),
             aspect.ratio = 1
         ) 
     save_g(g, g_path)
@@ -181,6 +233,9 @@ readRenviron("envs/results_pares.env")
 PAPERS_CSV_FILE_PATH <- Sys.getenv("PAPERS_CSV_FILE_PATH")
 G_PROFILES_CSV_FILE_PATH <- Sys.getenv("G_PROFILES_CSV_FILE_PATH")
 
+PAPERS_ONE_ABSTRACT_CSV_FILE_PATH <- Sys.getenv("PAPERS_ONE_ABSTRACT_CSV_FILE_PATH")
+G_PROFILES_ONE_ABSTRACT_CSV_FILE_PATH <- Sys.getenv("G_PROFILES_ONE_ABSTRACT_CSV_FILE_PATH")
+
 CONNECTIONS_FILE_PATH <- Sys.getenv("CONNECTIONS_FILE_PATH")
 G_CONNECTIONS_FILE_PATH <- Sys.getenv("G_CONNECTIONS_FILE_PATH")
 # ADD_PAPERS_CSV_FILE_PATH <- Sys.getenv("ADD_PAPERS_CSV_FILE_PATH")
@@ -188,70 +243,94 @@ G_CONNECTIONS_FILE_PATH <- Sys.getenv("G_CONNECTIONS_FILE_PATH")
 
 ds_papers <- read_csv_file(PAPERS_CSV_FILE_PATH) %>%
     papers_add_data() %>%
-    papers_profiles() %>%
+    papers_profiles()
+
+profile <- ds_papers %>%
     g_papers_profiles(G_PROFILES_CSV_FILE_PATH)
     
-ds_connections <- read_csv_file(CONNECTIONS_FILE_PATH) %>%
+
+ds_connections <- read_csv_file(CONNECTIONS_FILE_PATH)
+
+print("same")
+ds_same <- ds_connections %>%
+    filter(same == 1)
+print(nrow(ds_same))
+ds_same <- ds_same %>%
     filter(c_score_none == 0)
-print("nrows ds_connections: ")
-print(nrow(ds_connections))
+print(nrow(ds_same))
+print("----")
 
-g_same <- ds_connections %>%
-    filter(same == 1) %>%
-    write_csv_file("ds_same.csv")
-print("nrows g_same: ")
-print(nrow(g_same))
-
-g_diff <- ds_connections %>%
-    filter(same == 0) %>%
-    write_csv_file("ds_diff.csv")
-
-print("nrows g_diff: ")
-print(nrow(g_diff))
+print("diff")
+ds_diff <- ds_connections %>%
+    filter(same == 0)
+print(nrow(ds_diff))
+ds_diff <- ds_diff %>%
+    filter(c_score_none == 0)
+print(nrow(ds_diff))
+print("----")
 
 
-ds <- ds_connections %>%
+ds_semantic_connections <- ds_connections %>%
+    filter(c_score_none == 0) %>%
     get_langs_pairs_and_scores() %>%
-    add_median_min_max()  %>%
-    write_csv_file("connections_metrics.csv")
+    write_csv_file("_rep_/connections_metrics.csv")
+
+
+ds_semantic_connections <- add_median_min_max(ds_semantic_connections)
+
+print("nrows ds_semantic_connections: ")
+print(nrow(ds_semantic_connections))
+
+ds_same <- ds_semantic_connections %>%
+    filter(same == 1) %>%
+    write_csv_file("_rep_/ds_same.csv")
+print("nrows ds_same: ")
+print(nrow(ds_same))
+
+ds_diff <- ds_semantic_connections %>%
+    filter(same == 0) %>%
+    write_csv_file("_rep_/ds_diff.csv")
+
+print("nrows ds_diff: ")
+print(nrow(ds_diff))
 
 
 
-g_same_median <- ds %>%
+g_same_median <- ds_same %>%
     filter(same == 1) %>%
     mutate(metric=median) %>%
     g_langs_pairs_and_scores(
-        "g_same_mediana.jpg",
+        "_rep_/g_same_mediana.jpg",
         "Medianas % de similaridade semântica",
         "Resumos oriundos de mesmo artigo",
         "medianas"
     )
     
-g_same_min <- ds %>%
+g_same_min <- ds_same %>%
     filter(same == 1) %>%
     mutate(metric=min) %>%
     g_langs_pairs_and_scores(
-        "g_same_min.jpg",
+        "_rep_/g_same_min.jpg",
         "Mínimos % de similaridade semântica",
         "Resumos oriundos de mesmo artigo",
         "mínimos"
     )
 
-g_same_max <- ds %>%
+g_same_max <- ds_same %>%
     filter(same == 1) %>%
     mutate(metric=max) %>%
     g_langs_pairs_and_scores(
-        "g_same_max.jpg",
+        "_rep_/g_same_max.jpg",
         "Máximos % de similaridade semântica",
         "Resumos oriundos de mesmo artigo",
         "máximos"
     )
 
-g_same_n <- ds %>%
+g_same_n <- ds_same %>%
     filter(same == 1) %>%
     mutate(metric=n) %>%
     g_langs_pairs_and_scores(
-        "g_same_n.jpg",
+        "_rep_/g_same_n.jpg",
         "Quantidade de conexões",
         "Resumos oriundos de mesmo artigo",
         "conexões"
@@ -260,81 +339,55 @@ g_same_n <- ds %>%
 
 
     
-g_diff_median <- ds %>%
+g_diff_median <- ds_diff %>%
     filter(same == 0) %>%
     mutate(metric=median) %>%
     g_langs_pairs_and_scores(
-        "g_diff_mediana.jpg",
+        "_rep_/g_diff_mediana.jpg",
         "Medianas % de similaridade semântica",
         "Resumos oriundos de artigos diferentes",
         "medianas"
     )
     
-g_diff_min <- ds %>%
+g_diff_min <- ds_diff %>%
     filter(same == 0) %>%
     mutate(metric=min) %>%
     g_langs_pairs_and_scores(
-        "g_diff_min.jpg",
+        "_rep_/g_diff_min.jpg",
         "Mínimos % de similaridade semântica",
         "Resumos oriundos de artigos diferentes",
         "mínimos"
     )
 
-g_diff_max <- ds %>%
+g_diff_max <- ds_diff %>%
     filter(same == 0) %>%
     mutate(metric=max) %>%
     g_langs_pairs_and_scores(
-        "g_diff_max.jpg",
+        "_rep_/g_diff_max.jpg",
         "Máximos % de similaridade semântica",
         "Resumos oriundos de artigos diferentes",
         "máximos"
     )
 
-g_diff_n <- ds %>%
+g_diff_n <- ds_diff %>%
     filter(same == 0) %>%
     mutate(metric=n) %>%
     g_langs_pairs_and_scores(
-        "g_diff_n.jpg",
+        "_rep_/g_diff_n.jpg",
         "Quantidade de conexões",
         "Resumos oriundos de artigos diferentes",
         "conexões"
     )
-
 
 
 g <- grid.arrange(g_same_n, g_diff_n, nrow = 1) %>%
-    graphics("g_connections_numbers.jpg", width=80, height=40)
+    graphics("_rep_/g_connections_numbers.jpg", width=80, height=40)
+
 g <- grid.arrange(g_same_median, g_diff_median, nrow = 1) %>%
-    graphics("g_connections_median.jpg", width=80, height=40)
+    graphics("_rep_/g_connections_median.jpg", width=80, height=40)
 
 g <- grid.arrange(g_same_min, g_diff_min, nrow = 1) %>%
-    graphics("g_connections_min.jpg", width=80, height=40)
+    graphics("_rep_/g_connections_min.jpg", width=80, height=40)
 
 g <- grid.arrange(g_same_max, g_diff_max, nrow = 1) %>%
-    graphics("g_connections_max.jpg", width=80, height=40)
-
-# g <- grid.arrange(g_same_min, g_same_max, nrow = 1) %>%
-#     graphics("g_connections_same2.jpg")
-
-# g <- grid.arrange(g_diff_n, g_diff_median, g_diff_min, g_diff_max, nrow = 2) %>%
-#     graphics("g_connections_diff.jpg")
-# g <- grid.arrange(g_diff_n, g_diff_median, nrow = 1) %>%
-#     graphics("g_connections_diff1.jpg")
-# g <- grid.arrange(g_diff_min, g_diff_max, nrow = 1) %>%
-#     graphics("g_connections_diff2.jpg")
-
-
-
-# g <- grid.arrange(g_same_n, g_same_median, g_same_min, g_same_max, nrow = 2) %>%
-#     graphics("g_connections_same.jpg")
-# g <- grid.arrange(g_same_n, g_same_median, nrow = 1) %>%
-#     graphics("g_connections_same1.jpg")
-# g <- grid.arrange(g_same_min, g_same_max, nrow = 1) %>%
-#     graphics("g_connections_same2.jpg")
-
-# g <- grid.arrange(g_diff_n, g_diff_median, g_diff_min, g_diff_max, nrow = 2) %>%
-#     graphics("g_connections_diff.jpg")
-# g <- grid.arrange(g_diff_n, g_diff_median, nrow = 1) %>%
-#     graphics("g_connections_diff1.jpg")
-# g <- grid.arrange(g_diff_min, g_diff_max, nrow = 1) %>%
-#     graphics("g_connections_diff2.jpg")
+    graphics("_rep_/g_connections_max.jpg", width=80, height=40)

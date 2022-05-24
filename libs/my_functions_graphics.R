@@ -16,8 +16,8 @@ library("tools")
 # library("stringr")
 # library("patchwork")
 
-options(digits = 2)
-options(scipen = 999)
+# options(digits = 2)
+# options(scipen = 999)
 
 
 save_g <- function(graphic, file_path){
@@ -49,7 +49,7 @@ xxx <- function(graphic, file_path) {
 
 }
 
-graphics <- function(graphic, file_path, width=40, height=40) {
+graphics <- function(graphic, file_path, width=80, height=40) {
 
     ggsave(filename = file_path, plot = graphic, width=width, height=height, units="cm", dpi = 600)
 
