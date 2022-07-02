@@ -11,8 +11,8 @@ library(tidyverse)
 library(hrbrthemes)
 library(cowplot)
 library(viridis)
-source("libs/my_functions_papers_analysis.R")
-source("libs/my_functions_graphics.R")
+source("./libs/my_functions_papers_analysis.R")
+source("./libs/my_functions_graphics.R")
 
 
 papers_add_data <- function(ds) {
@@ -105,7 +105,7 @@ add_median_min_max <- function(ds) {
     # S0004-282X1974000200003_pt,S0004-282X1974000200003_en,S0004-282X1974000200003,S0004-282X1974000200003,1,0.87,0
     # S0004-282X1974000200003_pt,S0004-282X1974000200003_de,S0004-282X1974000200003,S0004-282X1974000200003,1,0.89,0
 
-    translations <- read_csv_file('LANGS.csv')
+    translations <- read_csv_file('./datasets/LANGS.csv')
 
     ds <- ds %>% 
         rename(lang=l1) %>%
