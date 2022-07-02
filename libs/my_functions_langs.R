@@ -88,7 +88,7 @@ classify_docs <- function(ds) {
 
 
 add_lang_text <- function(ds) {
-    translations <- read_csv_file('LANGS.csv')
+    translations <- read_csv_file('./datasets/LANGS.csv')
     ds <- inner_join(ds, translations, by="lang")
     ds[is.na(ds)] <- 0
     return (ds)
