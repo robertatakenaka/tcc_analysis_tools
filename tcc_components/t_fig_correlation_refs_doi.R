@@ -75,12 +75,12 @@ gcorr <- function(ds, output, title) {
                 "#8a226a"
                 )
             )
-    jpeg(filename=output, width=900, height=600)
+    jpeg(filename=output, width=1600, height=1200)
     plot(1:2)
     par(mar=c(0,0,0,0))
     corrplot(s1.cor, method="color", addCoef.col="white", 
-        number.cex = 1, 
-        tl.cex = 1.2,
+        number.cex = 2, 
+        tl.cex = 2.2,
         tl.srt = 45,
         type="lower", col=cols(20),
         # p.mat = p.mat, sig.level = 0.05, insig="blank",
