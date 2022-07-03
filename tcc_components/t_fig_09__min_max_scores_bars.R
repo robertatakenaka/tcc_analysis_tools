@@ -1,6 +1,6 @@
 #########################################################
 #
-# Figure 9
+# Figure 12
 #
 #
 #########################################################
@@ -59,18 +59,18 @@ d_graphic <- function(ds, xlabel, title) {
         ) +
         theme_bw() +
         scale_fill_viridis_d(option = 'turbo') +
-        theme(text = element_text(size = 15), legend.position = "none")
+        theme(text = element_text(size = 18), legend.position = "none")
     return (g)
 }
 
 numbers <- function(ds, name, filename) {
     g_min <- ds %>%
             mutate(item=min_score) %>%
-            d_graphic("menor valor do coeficiente de similaridade de cada artigo", name)
+            d_graphic("mínimos coeficienes de similaridade", name)
 
     g_max <- ds %>%
             mutate(item=max_score) %>%
-            d_graphic("maior valor do coeficiente de similaridade de cada artigo", name)
+            d_graphic("máximos coeficienes de similaridade", name)
 
     # g_n <- ds %>%
     #         mutate(item=connections) %>%
@@ -86,7 +86,6 @@ numbers <- function(ds, name, filename) {
 }
 
 readRenviron("envs/min_max.env")
-G2_MIN_MAX_FILE_PATH <- Sys.getenv("G2_MIN_MAX_FILE_PATH")
 
 S1_CONNECTIONS <- Sys.getenv("S1_CONNECTIONS")
 S2_CONNECTIONS <- Sys.getenv("S2_CONNECTIONS")
@@ -97,6 +96,11 @@ S2_CONNECTIONS_fixed <- Sys.getenv("S2_CONNECTIONS_fixed")
 S3_CONNECTIONS_fixed <- Sys.getenv("S3_CONNECTIONS_fixed")
 
 G_MIN_MAX_FILE_PATH <- Sys.getenv("G_MIN_MAX_FILE_PATH")
+GA_MIN_MAX_FILE_PATH <- Sys.getenv("GA_MIN_MAX_FILE_PATH")
+GB_MIN_MAX_FILE_PATH <- Sys.getenv("GB_MIN_MAX_FILE_PATH")
+GC_MIN_MAX_FILE_PATH <- Sys.getenv("GC_MIN_MAX_FILE_PATH")
+
+
 g_a <- fix_connections(S1_CONNECTIONS)%>%
         d_min_max_connections() %>%
         write_csv_file(S1_CONNECTIONS_fixed)
@@ -110,16 +114,15 @@ g_c <- fix_connections_pid(S3_CONNECTIONS)%>%
         write_csv_file(S3_CONNECTIONS_fixed)
         
 
-gs_a <- numbers(g_a, "A", "_rep_/min_max_a.jpg")
+gs_a <- numbers(g_a, "A", GA_MIN_MAX_FILE_PATH)
 
-gs_b <- numbers(g_b, "B", "_rep_/min_max_b.jpg")
+gs_b <- numbers(g_b, "B", GB_MIN_MAX_FILE_PATH)
 
-gs_c <- numbers(g_c, "C", "_rep_/min_max_c.jpg")
-
+gs_c <- numbers(g_c, "C", GC_MIN_MAX_FILE_PATH)
 
 
 grid.arrange(gs_a, gs_b, gs_c, nrow = 1) %>%
-         graphics("_rep_/min_max_all.jpg", width=40, height=20)
+         graphics(G_MIN_MAX_FILE_PATH, width=40, height=20)
 # grid.arrange(gs_b, nrow = 1) %>%
 #         graphics("min_max_b.jpg", width=40, height=20)
 # grid.arrange(gs_c, nrow = 1) %>%
