@@ -84,7 +84,7 @@ gcorr <- function(ds, output, title) {
         tl.srt = 45,
         type="lower", col=cols(20),
         # p.mat = p.mat, sig.level = 0.05, insig="blank",
-        title=title, mar=c(0,4,2,0), oma=c(0,0,0,0)
+        mar=c(0,4,0,0), oma=c(0,0,0,0)
     )
     dev.off()
 #return (g)
@@ -101,7 +101,6 @@ add_qtd_sources_to_papers <- function(ds_papers, ds_sources) {
 }
 
 readRenviron("envs/refs_correlations.env")
-G2_MIN_MAX_FILE_PATH <- Sys.getenv("G2_MIN_MAX_FILE_PATH")
 
 S1_PAPERS_REFS <- Sys.getenv("S1_PAPERS_REFS")
 S2_PAPERS_REFS <- Sys.getenv("S2_PAPERS_REFS")
@@ -119,20 +118,20 @@ GS_PAPERS_REFS <- Sys.getenv("GS_PAPERS_REFS")
 
 
 s1 <- read_csv_file(S1_PAPERS_REFS)
-s2 <- read_csv_file(S2_PAPERS_REFS)
-s3 <- read_csv_file(S3_PAPERS_REFS)
+# s2 <- read_csv_file(S2_PAPERS_REFS)
+# s3 <- read_csv_file(S3_PAPERS_REFS)
 
 ds_sources_refs_1 <- read_csv_file(S1_SOURCES_REFS)
-ds_sources_refs_2 <- read_csv_file(S2_SOURCES_REFS)
-ds_sources_refs_3 <- read_csv_file(S3_SOURCES_REFS)
+# ds_sources_refs_2 <- read_csv_file(S2_SOURCES_REFS)
+# ds_sources_refs_3 <- read_csv_file(S3_SOURCES_REFS)
 
 ds1 <- add_qtd_sources_to_papers(s1, ds_sources_refs_1)
-ds2 <- add_qtd_sources_to_papers(s2, ds_sources_refs_2)
-ds3 <- add_qtd_sources_to_papers(s3, ds_sources_refs_3)
+# ds2 <- add_qtd_sources_to_papers(s2, ds_sources_refs_2)
+# ds3 <- add_qtd_sources_to_papers(s3, ds_sources_refs_3)
 
 ga <- gcorr(ds1, G_S1_PAPERS_REFS, "A")
-gb <- gcorr(ds2, G_S2_PAPERS_REFS, "B")
-gc <- gcorr(ds3, G_S3_PAPERS_REFS, "C")
+# gb <- gcorr(ds2, G_S2_PAPERS_REFS, "B")
+# gc <- gcorr(ds3, G_S3_PAPERS_REFS, "C")
 
 # s <- rbind(s1, s2, s3) %>% gcorr(GS_PAPERS_REFS, "")
 # g <- grid.arrange(ga, gb, nrow = 1) %>%
