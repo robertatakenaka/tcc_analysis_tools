@@ -27,7 +27,7 @@ source("libs/my_functions_graphics.R")
 options(digits = 2)
 options(scipen = 999)
 
-readRenviron("envs/abstracts__lang.env")
+# readRenviron("envs/abstracts__lang.env")
 readRenviron("envs/abstracts__lang_area.env")
 
 SOURCE_WITH_LANG_TEXT_CSV_FILE_PATH <- Sys.getenv("SOURCE_WITH_LANG_TEXT_CSV_FILE_PATH")
@@ -69,8 +69,8 @@ read_graphic_csv_file <- function() {
 
 draw_graphic <- function(ds_g, title, file_path, nrow=1, arg_xlab="",
                          arg_ylab="", aspect_ratio=1,
-                         width=10, height=10) {
-    
+                         width=10, height=10, file_type="jpg") {
+    print(head(ds_g))
     don <- data.frame(
             langs=ds_g$lang_text, 
             val=as.numeric(ds_g$perc_n_langs_in_area),
@@ -92,13 +92,13 @@ draw_graphic <- function(ds_g, title, file_path, nrow=1, arg_xlab="",
             position=position_dodge(width = 1)
         ) +
         coord_flip() +
-        expand_limits(y = c(-2, max(don$val)+35)) +
+        expand_limits(y = c(-2, max(don$val)+30)) +
         xlab(arg_xlab) +
         ylab(arg_ylab) +
         theme_bw() +
         facet_wrap(~grp, nrow=nrow) +
         theme(
-            aspect.ratio=((height * 1.3) / width),
+            aspect.ratio=aspect_ratio,
             legend.position = "none",
             panel.border = element_blank(),
             panel.spacing = unit(0.1, "lines"),
@@ -108,8 +108,14 @@ draw_graphic <- function(ds_g, title, file_path, nrow=1, arg_xlab="",
         )
     # save_g(g, paste(file_path, "jpg", sep="."))
     #g <- grid.arrange(g, nrow = nrow) %>%
-    graphics(g, paste(file_path, "jpg", sep="."), width=width, height=height)
+    if (file_type == 'svg') {
+        print(paste(file_path, file_type, sep="."))
+        save_g(g, paste(file_path, file_type, sep="."))
 
+    } else {
+        graphics(g, paste(file_path, file_type, sep="."), width=width, height=height)
+    }
+    
     
     return (g)
         
@@ -138,19 +144,60 @@ get_filename <- function(area, ext="") {
 
 
 get_subject_areas_graphic <- function(areas, nrow=1, arg_xlab="", arg_ylab="",
-        aspect_ratio=1, width=10, height=10) {
+        aspect_ratio=1, width=20, height=10) {
     filename = str_c(areas, collapse = "_")
     partial_filename <- get_filename(filename)
     ds_g <- read_graphic_csv_file() %>%
-        filter(subject_area %in% areas) %>%
-        draw_graphic("title", partial_filename, nrow=nrow,
-                     arg_xlab=arg_xlab, arg_ylab=arg_ylab,
-                     aspect_ratio=aspect_ratio,
-                     width=width,
-                     height=height
-        )
+        filter(subject_area %in% areas)
+
+    if (length(areas) == 1) {
+        print(head(ds_g))
+        ds_g <- ds_g[order(as.numeric(ds_g$n_langs_in_area)),]
+        print(ds_g)
+        ds_g <- ds_g %>% 
+            mutate(grp=case_when(
+                        (n_langs_in_area < 20) ~ "2",
+                        (n_langs_in_area >= 20) ~ "1"))
+
+        g1 <- ds_g %>% 
+            filter(grp == "1") %>%
+            draw_graphic("title", paste(partial_filename, ds_g$grp[1], sep="_"),
+                         nrow=nrow,
+                         arg_xlab=arg_xlab, arg_ylab=arg_ylab,
+                         aspect_ratio=aspect_ratio,
+                         width=width,
+                         height=height,
+                         file_type="svg"
+            )
+        g2 <- ds_g %>% 
+            filter(grp == "2") %>%
+            draw_graphic("title", paste(partial_filename, ds_g$grp[1], sep="_"),
+                         nrow=nrow,
+                         arg_xlab=arg_xlab, arg_ylab=arg_ylab,
+                         aspect_ratio=aspect_ratio,
+                         width=width,
+                         height=height,
+                         file_type="svg"
+            )
+                
+        g <- grid.arrange(g1, g2, nrow = 1) %>%
+            graphics(paste(partial_filename, "jpg", sep="."), width, height)
+
+
+
+    } else {
+        ds_g <- ds_g %>%
+            mutate(grp=subject_area) %>%
+            draw_graphic("title", partial_filename, nrow=nrow,
+                         arg_xlab=arg_xlab, arg_ylab=arg_ylab,
+                         aspect_ratio=aspect_ratio,
+                         width=width,
+                         height=height
+            )
+    }
     return (ds_g)
 }
+
 
 
 # areas = c("Ciências Agrárias", "Ciências Exatas e da Terra", "Engenharias")
@@ -176,25 +223,25 @@ get_subject_areas_graphic <- function(areas, nrow=1, arg_xlab="", arg_ylab="",
 # )
 
 
-# areas = c("Ciências Humanas", "Ciências Sociais Aplicadas")
+areas = c("Ciências Humanas", "Ciências Sociais Aplicadas")
+get_subject_areas_graphic(
+    areas,
+    nrow=1,
+    arg_xlab="Idiomas dos resumos",
+    arg_ylab="Porcentagem dos idiomas dos resumos",
+    aspect_ratio=2.4/3,
+    width=30, height=13
+
+)
+
+
+# areas = c("Linguística, Letras e Artes")
 # get_subject_areas_graphic(
 #     areas,
 #     nrow=1,
 #     arg_xlab="Idiomas dos resumos",
 #     arg_ylab="Porcentagem dos idiomas dos resumos",
-#     aspect_ratio=2/3,
-#     width=30, height=14
+#     aspect_ratio=1/2,
+#     width=28, height=9
 
 # )
-
-
-areas = c("Linguística, Letras e Artes")
-get_subject_areas_graphic(
-    areas,
-    nrow=2,
-    arg_xlab="Idiomas dos resumos",
-    arg_ylab="Porcentagem dos idiomas dos resumos",
-    aspect_ratio=1/2,
-    width=30, height=16
-
-)

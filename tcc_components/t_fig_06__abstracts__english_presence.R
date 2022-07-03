@@ -4,9 +4,19 @@
 # 
 # ==================================================
 
+library(dplyr)
+library(tidyverse)
+library(stringi)
+library(svglite)
+library(patchwork)
+library(gridExtra)
 
-source("libs/my_functions__abstracts__lang_area.R")
+source("libs/my_functions_files.R")
+source("libs/my_functions_translated_codes.R")
+source("libs/my_functions_graphics.R")
 
+options(digits = 2)
+options(scipen = 999)
 
 get_ds_marked_with_english_presence <- function() {
     if (file.exists(ARTICLE_WITH_ENGLISH_PRESENCE_CSV_FILE_PATH)) {
@@ -79,7 +89,7 @@ create_area_and_classification_files <- function(ds) {
 }
 
 
-draw_graphic <- function(ds_g, title, file_path) {
+draw_graphic <- function(ds_g, title, file_path, width, height) {
     
     don <- data.frame(
       x=ds_g$classification, 
@@ -92,35 +102,39 @@ draw_graphic <- function(ds_g, title, file_path) {
 
     g <- don %>%
         ggplot() +
+        # scale_y_continuous(trans='log2') +
         geom_segment( aes(x=x, xend=x, y=0, yend=val), color="black") +
         geom_point( aes(x=x, y=val, color=x), size=3 ) +
         geom_text(
             aes(x=x, y=val, label=display),
-            hjust = -0.2, size = 2.5,
+            hjust = -0.2, size = 5.5,
             position=position_dodge(width = 1)
         ) +
         coord_flip()+
-        expand_limits(y = c(-0.5, don$val+50)) +
+        expand_limits(y = c(-0.5, max(don$val)+200)) +
         theme_bw() +
         xlab("") +
         ylab("Porcentagem de artigos") +
-        facet_wrap(~grp, ncol=2) +
+        facet_wrap(~grp, nrow=3) +
         theme(
-            aspect.ratio=1/3,
+            aspect.ratio=((height) / width),
             legend.position = "none",
-            plot.margin=margin(2,2,2,2),
+            plot.margin=margin(0.5,0.5,0.5,0.5),
             panel.border = element_blank(),
             panel.spacing = unit(1, "lines"),
-            strip.text.x = element_text(size = 9)
+            text = element_text(size = 19)
         )
     
     #save_g(g, paste(file_path, "pdf", sep="."))
-    save_g(g, paste(file_path, "svg", sep="."))
-    
+    #save_g(g, paste(file_path, "svg", sep="."))
+    g1 <- save_g(g, paste(file_path, "svg", sep="."))
+
+    g <- grid.arrange(g1, nrow = 1) %>%
+        graphics(paste(GRAPHIC_FILE_PATH, "jpg", sep="."), width=width, height=height)
+
 }
 
 readRenviron("envs/abstracts__english_presence.env")
-
 
 SOURCE_CSV_FILE_PATH <- Sys.getenv("SOURCE_CSV_FILE_PATH")
 SOURCE_WITH_LANG_TEXT_AND_SUBJECT_AREA_CSV_FILE_PATH <- Sys.getenv("SOURCE_WITH_LANG_TEXT_AND_SUBJECT_AREA_CSV_FILE_PATH")
@@ -155,7 +169,7 @@ if (file.exists(GRAPHIC_CSV_FILE_PATH)) {
         )) %>%
         write_csv_file(GRAPHIC_CSV_FILE_PATH)
 }
-draw_graphic(ds_graphic, "", GRAPHIC_FILE_PATH)
+draw_graphic(ds_graphic, "", GRAPHIC_FILE_PATH, width=32, height=15)
 
 
 
