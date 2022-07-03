@@ -44,11 +44,11 @@ draw_graphic <- function(ds_g, title, file_path, d) {
         geom_text(
             aes(x=x, y=val, label=display),
             size=3.5,
-            hjust = -0.2, size = 2.5,
+            hjust = -0.2,
             position=position_dodge(width = 1)
         ) +
         coord_flip()+
-        expand_limits(y = c(-0.1, don$val+d)) +
+        expand_limits(y = c(-0.1, max(don$val)+d)) +
         theme_bw() +
         theme(
             legend.position = "none",
