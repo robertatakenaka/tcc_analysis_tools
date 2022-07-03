@@ -59,18 +59,18 @@ d_graphic <- function(ds, xlabel, title) {
         ) +
         theme_bw() +
         scale_fill_viridis_d(option = 'turbo') +
-        theme(text = element_text(size = 18), legend.position = "none")
+        theme(text = element_text(size = 10), legend.position = "none")
     return (g)
 }
 
 numbers <- function(ds, name, filename) {
     g_min <- ds %>%
             mutate(item=min_score) %>%
-            d_graphic("mínimos coeficienes de similaridade", name)
+            d_graphic("mínimos coeficientes de similaridade", name)
 
     g_max <- ds %>%
             mutate(item=max_score) %>%
-            d_graphic("máximos coeficienes de similaridade", name)
+            d_graphic("máximos coeficientes de similaridade", name)
 
     # g_n <- ds %>%
     #         mutate(item=connections) %>%
@@ -81,7 +81,7 @@ numbers <- function(ds, name, filename) {
     #         d_graphic("quantidade de conexões | min > 50%", name)
 
     g <- grid.arrange(g_min, g_max, nrow = 2) %>%
-        graphics(filename, width=15, height=30)
+        graphics(filename, width=8, height=20)
     return(g)
 }
 
@@ -122,7 +122,7 @@ gs_c <- numbers(g_c, "C", GC_MIN_MAX_FILE_PATH)
 
 
 grid.arrange(gs_a, gs_b, gs_c, nrow = 1) %>%
-         graphics(G_MIN_MAX_FILE_PATH, width=40, height=20)
+         graphics(G_MIN_MAX_FILE_PATH, width=21, height=10)
 # grid.arrange(gs_b, nrow = 1) %>%
 #         graphics("min_max_b.jpg", width=40, height=20)
 # grid.arrange(gs_c, nrow = 1) %>%
