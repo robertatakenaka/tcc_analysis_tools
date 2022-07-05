@@ -26,7 +26,7 @@ source("./libs/my_functions_graphics.R")
 
 one_abstract_papers_data <- function(ds) {
     # a_pid,c_pid,real_a_pid,real_c_pid,same,c_score,c_score_none
-    # S0004-05922014000300016_it,S0004-05922014000300016_en,S0004-05922014000300016,S0004-05922014000300016,1,0.76,0
+    # S0004-05922014000400016_it,S0004-05922014000300016_en,S0004-05922014000300016,S0004-05922014000300016,1,0.76,0
     # S0004-05922014000300016_en,S0004-05922014000300016_it,S0004-05922014000300016,S0004-05922014000300016,1,0.76,0
 
     ds <- ds %>%
@@ -45,7 +45,7 @@ one_abstract_papers_data <- function(ds) {
 papers_add_data <- function(ds) {
     # pid,refs,refs_with_doi,connections,score_gt_89,score_gt_79,score_gt_69,score_gt_59,score_gt_1_59,score_lt_1,score_none,no_en,en_only,with_en
     # S0004-282X1951000100001_it,9,0,1,0,1,0,0,0,0,0,1,0,0
-    # S0004-282X1956000300001_pt,15,0,2,0,1,1,0,0,0,0,1,0,0
+    # S0004-282X1957000300001_pt,15,0,2,0,1,1,0,0,0,0,1,0,0
     # S0004-282X1965000200001_pt,75,0,2,0,2,0,0,0,0,0,1,0,0
     # S0004-282X1974000200003_pt,19,0,2,0,2,0,0,0,0,0,1,0,0
     ds <- ds %>%
@@ -67,7 +67,7 @@ papers_add_data <- function(ds) {
             min_expected_connections_by_semantic_similarity=n()-1,
             abstracts=n(),
         ) %>%
-        mutate(sum(min_expected_connections_by_semantic_similarity))
+        mutate(sum(min_expected_connections_by_semantic_similarity)) %>%
         ungroup()
     print(head(ds))
     return (ds)
@@ -92,21 +92,34 @@ papers_profiles <- function(ds) {
 g_papers_profiles <- function(ds, g_path) {
     g <- ds %>%
         ggplot(aes(x=abstracts)) +
+        # scale_y_continuous(trans='log10') +
         geom_bar(aes(y = after_stat(count), x=abstracts, fill=as.factor(abstracts)), stat = 'count') +
-        geom_text(aes(label = after_stat(count)), vjust = -1, stat = "count", size=3) +
+        # geom_text(aes(label = after_stat(count)), vjust = -1, stat = "count", size=3) +
+        geom_text(
+            aes(label=after_stat(count)),
+            stat = "count",
+            size=5,
+            hjust = -0.2,
+            position=position_dodge(width = 1)
+        ) +
         labs(
             x = "Quantidade de resumos",
             y = "Quantidade de artigos"
         ) +
         # scale_y_continuous(trans='log2') +
-        # coord_flip() + 
+        coord_flip() + 
+        expand_limits(y = c(-0.1, 3000)) +
         theme_bw() +
         scale_fill_viridis_d(option = 'viridis') +
         theme(
-            plot.margin = margin(0.9, 0.9, 0.9, 0.9, "cm"),
-            text = element_text(size = 20), legend.position = "none")
+            aspect.ratio=1 / 5,
+            plot.margin = margin(1, 0, 0, 0, "cm"),
+            text = element_text(size = 12), 
+            legend.position = "none"
+        )
     
-    save_g(g, g_path)
+    # save_g(g, g_path)
+    graphics(g, g_path, width=18, height=5)
     return (g)
 }
 
@@ -189,10 +202,10 @@ g_langs_pairs_and_scores <- function(ds, g_path, title, subtitle, legend, text_c
     # S0004-282X1974000200003_pt,S0004-282X1974000200003_en,S0004-282X1974000200003,S0004-282X1974000200003,1,0.87,0
     # S0004-282X1974000200003_pt,S0004-282X1974000200003_de,S0004-282X1974000200003,S0004-282X1974000200003,1,0.89,0
 
-    text_size <- 38
-    cell_size <- 9.5
+    text_size <- 27
+    cell_size <- 9
     if (ds$same[1] == 1){
-        cell_size <- 7
+        cell_size <- cell_size * 0.75
         # text_size <- 21
     }
     ds['c_score'] <- NULL
@@ -205,19 +218,21 @@ g_langs_pairs_and_scores <- function(ds, g_path, title, subtitle, legend, text_c
         coord_flip() + 
         # scale_fill_viridis_c() +
         labs(
-            title = title,
-            subtitle = subtitle,
+            title = paste(title, subtitle, sep=" | "),
             x = "De",
             y = "Para"
         ) +
         theme(
-            plot.margin = margin(0.9, 0.9, 0.9, 0.9, "cm"),
+            plot.margin = margin(0.1, 0.1, 0.1, 0.1, "cm"),
             legend.position = "none",
             text = element_text(size=text_size),
-            axis.text.x = element_text(angle = 90),
+            axis.text.x = element_text(angle = 90, size=text_size),
+            axis.text.y = element_text(size=text_size),
             aspect.ratio = 1
         ) 
-    save_g(g, g_path)
+    # save_g(g, g_path)
+    graphics(g, g_path, width=40, height=40)
+
     return (g)
 }
 
@@ -301,7 +316,7 @@ g_same_median <- ds_same %>%
     mutate(metric=median) %>%
     g_langs_pairs_and_scores(
         "_rep_/g_same_mediana.jpg",
-        "Medianas % de similaridade semântica",
+        "Medianas",
         "Resumos oriundos de mesmo artigo",
         "medianas"
     )
@@ -311,7 +326,7 @@ g_same_min <- ds_same %>%
     mutate(metric=min) %>%
     g_langs_pairs_and_scores(
         "_rep_/g_same_min.jpg",
-        "Mínimos % de similaridade semântica",
+        "Mínimos",
         "Resumos oriundos de mesmo artigo",
         "mínimos"
     )
@@ -321,7 +336,7 @@ g_same_max <- ds_same %>%
     mutate(metric=max) %>%
     g_langs_pairs_and_scores(
         "_rep_/g_same_max.jpg",
-        "Máximos % de similaridade semântica",
+        "Máximos",
         "Resumos oriundos de mesmo artigo",
         "máximos"
     )
@@ -344,7 +359,7 @@ g_diff_median <- ds_diff %>%
     mutate(metric=median) %>%
     g_langs_pairs_and_scores(
         "_rep_/g_diff_mediana.jpg",
-        "Medianas % de similaridade semântica",
+        "Medianas",
         "Resumos oriundos de artigos diferentes",
         "medianas"
     )
@@ -354,7 +369,7 @@ g_diff_min <- ds_diff %>%
     mutate(metric=min) %>%
     g_langs_pairs_and_scores(
         "_rep_/g_diff_min.jpg",
-        "Mínimos % de similaridade semântica",
+        "Mínimos",
         "Resumos oriundos de artigos diferentes",
         "mínimos"
     )
@@ -364,7 +379,7 @@ g_diff_max <- ds_diff %>%
     mutate(metric=max) %>%
     g_langs_pairs_and_scores(
         "_rep_/g_diff_max.jpg",
-        "Máximos % de similaridade semântica",
+        "Máximos",
         "Resumos oriundos de artigos diferentes",
         "máximos"
     )
@@ -379,15 +394,27 @@ g_diff_n <- ds_diff %>%
         "conexões"
     )
 
+g <- grid.arrange(g_same_n, g_diff_n, nrow = 2) %>%
+    graphics("_rep_/v_g_connections_numbers.jpg", width=40, height=80)
 
-g <- grid.arrange(g_same_n, g_diff_n, nrow = 1) %>%
-    graphics("_rep_/g_connections_numbers.jpg", width=80, height=40)
+g <- grid.arrange(g_same_median, g_diff_median, nrow = 2) %>%
+    graphics("_rep_/v_g_connections_median.jpg", width=40, height=80)
 
-g <- grid.arrange(g_same_median, g_diff_median, nrow = 1) %>%
-    graphics("_rep_/g_connections_median.jpg", width=80, height=40)
+g <- grid.arrange(g_same_min, g_diff_min, nrow = 2) %>%
+    graphics("_rep_/v_g_connections_min.jpg", width=40, height=80)
 
-g <- grid.arrange(g_same_min, g_diff_min, nrow = 1) %>%
-    graphics("_rep_/g_connections_min.jpg", width=80, height=40)
+g <- grid.arrange(g_same_max, g_diff_max, nrow = 2) %>%
+    graphics("_rep_/v_g_connections_max.jpg", width=40, height=80)
 
-g <- grid.arrange(g_same_max, g_diff_max, nrow = 1) %>%
-    graphics("_rep_/g_connections_max.jpg", width=80, height=40)
+
+# g <- grid.arrange(g_same_n, g_diff_n, nrow = 1) %>%
+#     graphics("_rep_/g_connections_numbers.jpg", width=80, height=40)
+
+# g <- grid.arrange(g_same_median, g_diff_median, nrow = 1) %>%
+#     graphics("_rep_/g_connections_median.jpg", width=80, height=40)
+
+# g <- grid.arrange(g_same_min, g_diff_min, nrow = 1) %>%
+#     graphics("_rep_/g_connections_min.jpg", width=80, height=40)
+
+# g <- grid.arrange(g_same_max, g_diff_max, nrow = 1) %>%
+#     graphics("_rep_/g_connections_max.jpg", width=80, height=40)

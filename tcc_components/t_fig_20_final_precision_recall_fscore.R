@@ -22,15 +22,15 @@ connections_graphic <- function(ds) {
     g <- ds %>%
         ggplot(aes(x=connections)) +
         scale_y_continuous(trans='log10') +
-        # geom_histogram(aes(y = after_stat(count)), binwidth = 0.5, fill="#21918c", color="#21918c", alpha=0.5) +
-        geom_bar(aes(y = after_stat(count)), binwidth = 0.5, fill="#13306dff", color="#13306dff", alpha=0.5) +
-        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 8) +
+        # geom_histogram(aes(y = after_stat(count)), binwidth = 0.5, fill="#21918c", color="#21918c", alpha=0.2) +
+        geom_bar(aes(y = after_stat(count)), binwidth = 0.5, fill="#13306dff", color="#13306dff", alpha=0.2) +
+        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 4) +
         labs(
             x = "Quantidade de conexões",
             y = "Quantidade de artigos"
         ) +
         theme_bw() +
-        theme(text = element_text(size = 25))
+        theme(text = element_text(size = 13))
     return (g)
 }
 
@@ -40,15 +40,15 @@ vp_graphic <- function(ds) {
     g <- ds %>%
         ggplot(aes(x=VP)) +
         scale_y_continuous(trans='log10') +
-        # geom_histogram(aes(y = after_stat(count)), binwidth = 0.5, fill="#21918c", color="#21918c", alpha=0.5) +
-        geom_bar(aes(y = after_stat(count)), binwidth = 0.5, fill="#13306dff", color="#13306dff", alpha=0.5) +
-        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 8) +
+        # geom_histogram(aes(y = after_stat(count)), binwidth = 0.5, fill="#21918c", color="#21918c", alpha=0.2) +
+        geom_bar(aes(y = after_stat(count)), binwidth = 0.5, fill="#13306dff", color="#13306dff", alpha=0.2) +
+        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 4) +
         labs(
             x = "VP = Quantidade de artigos relevantes recomendados",
             y = "Quantidade de artigos"
         ) +
         theme_bw() +
-        theme(text = element_text(size = 25))
+        theme(text = element_text(size = 13))
     return (g)
 }
 
@@ -78,9 +78,9 @@ fp_graphic <- function(ds) {
         ggplot(aes(x=qFP)) +
         scale_y_continuous(trans='log10') +
         # scale_x_continuous(trans='log2') +
-        # # geom_histogram(aes(y = after_stat(count)), binwidth = 0.5, fill="#21918c", color="#21918c", alpha=0.5) +
-        geom_bar(aes(y = after_stat(count)), binwidth = 2, fill="#21918c", color="#21918c", alpha=0.5) +
-        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 8) +
+        # # geom_histogram(aes(y = after_stat(count)), binwidth = 0.5, fill="#21918c", color="#21918c", alpha=0.2) +
+        geom_bar(aes(y = after_stat(count)), binwidth = 2, fill="#21918c", color="#21918c", alpha=0.2) +
+        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 4) +
         # geom_freqpoly(binwidth = 0.5) +
 
         labs(
@@ -88,7 +88,7 @@ fp_graphic <- function(ds) {
             y = "Quantidade de artigos"
         ) +
         theme_bw() +
-        theme(text = element_text(size = 25))
+        theme(text = element_text(size = 13))
     return (g)
 }
 
@@ -98,15 +98,15 @@ fn_graphic <- function(ds) {
     g <- ds %>%
         ggplot(aes(x=FN)) +
         scale_y_continuous(trans='log10') +
-        # geom_histogram(aes(y = after_stat(count)), binwidth = 0.5, fill="#21918c", color="#21918c", alpha=0.5) +
-        geom_bar(aes(y = after_stat(count)), binwidth = 1, fill="#403891ff", color="#403891ff", alpha=0.5) +
-        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 8) +
+        # geom_histogram(aes(y = after_stat(count)), binwidth = 0.5, fill="#21918c", color="#21918c", alpha=0.2) +
+        geom_bar(aes(y = after_stat(count)), binwidth = 1, fill="#FE5A27", color="#FE5A27", alpha=0.2) +
+        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 4) +
         labs(
             x = "FN = Quantidade de artigos relevantes não recomendados",
             y = "Quantidade de artigos"
         ) +
         theme_bw() +
-        theme(text = element_text(size = 25))
+        theme(text = element_text(size = 13))
     return (g)
 }
 
@@ -117,16 +117,16 @@ d_graphic_precision <- function(ds) {
     g <- ds %>%
         ggplot(aes(x=q)) +
         scale_y_continuous(trans='log10') +
-        ## geom_histogram(aes(y = after_stat(count)), binwidth = 0.5, fill="#21918c", color="#21918c", alpha=0.5) +
-        geom_bar(aes(y = after_stat(count)), binwidth = 0.1, fill="#90548bff", color="#90548bff", alpha=0.5) +
-        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 8) +
+        ## geom_histogram(aes(y = after_stat(count)), binwidth = 0.5, fill="#21918c", color="#21918c", alpha=0.2) +
+        geom_bar(aes(y = after_stat(count)), binwidth = 0.1, fill="#90548bff", color="#90548bff", alpha=0.2) +
+        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 4) +
         ##geom_freqpoly(binwidth = 0.5) +
         labs(
             x = "Precisão = artigos relevantes / total de recomendados",
             y = "Quantidade de artigos"
         ) +
         theme_bw() +
-        theme(text = element_text(size = 25))
+        theme(text = element_text(size = 13))
     return (g)
 }
 
@@ -137,16 +137,16 @@ d_graphic_precision <- function(ds) {
 #         scale_y_continuous(trans='log10') +
 #         # scale_x_continuous(trans='log2') +
 
-#         ## geom_histogram(aes(y = after_stat(count)), binwidth = 0.5, fill="#21918c", color="#21918c", alpha=0.5) +
-#         geom_bar(aes(y = after_stat(count)), binwidth = 0.1, fill="#3b528b", color="#3b528b", alpha=0.5) +
-#         # geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 8) +
+#         ## geom_histogram(aes(y = after_stat(count)), binwidth = 0.5, fill="#21918c", color="#21918c", alpha=0.2) +
+#         geom_bar(aes(y = after_stat(count)), binwidth = 0.1, fill="#3b528b", color="#3b528b", alpha=0.2) +
+#         # geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 4) +
 #         ##geom_freqpoly(binwidth = 0.5) +
 #         labs(
 #             x = "Precisão = artigos relevantes / total de recomendados",
 #             y = "Quantidade de artigos"
 #         ) +
 #         theme_bw() +
-#         theme(text = element_text(size = 25))
+#         theme(text = element_text(size = 13))
 #     return (g)
 # }
 
@@ -155,14 +155,14 @@ d_graphic_recall <- function(ds) {
     g <- ds %>%
         ggplot(aes(x=sensibilidade)) +
         scale_y_continuous(trans='log10') +
-        geom_bar(aes(y = after_stat(count)), binwidth = 1, fill="#cc6a70ff", color="#cc6a70ff", alpha=0.5) +
-        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 8) +
+        geom_bar(aes(y = after_stat(count)), binwidth = 1, fill="#00AA4F", color="#00AA4F", alpha=0.2) +
+        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 4) +
         labs(
             x = "Sensibilidade= relevantes recomendados/ total de relevantes",
             y = "Quantidade de artigos"
         ) +
         theme_bw() +
-        theme(text = element_text(size = 25))
+        theme(text = element_text(size = 13))
     
     return (g)
 }
@@ -189,15 +189,15 @@ d_graphic_f1score <- function(ds) {
     g <- ds %>%
         ggplot(aes(x=fs)) +
         scale_y_continuous(trans='log10') +
-        # geom_histogram(aes(y = after_stat(count)), binwidth = 0.05, fill="#fb528b", color="#fb528b", alpha=0.5) +
-        geom_bar(aes(y = after_stat(count)), binwidth = 0.5, fill="#f9b641ff", color="#f9b641ff", alpha=0.5) +
-        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 8) +
+        # geom_histogram(aes(y = after_stat(count)), binwidth = 0.05, fill="#fb528b", color="#fb528b", alpha=0.2) +
+        geom_bar(aes(y = after_stat(count)), binwidth = 0.5, fill="#f9b641ff", color="#f9b641ff", alpha=0.2) +
+        geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size = 4) +
         labs(
             x = "F-score",
             y = "Quantidade de artigos"
         ) +
         theme_bw() +
-        theme(text = element_text(size = 25))
+        theme(text = element_text(size = 13))
     
     return (g)
 }
@@ -212,14 +212,14 @@ d_graphic_f1score <- function(ds) {
 d_graphic_f1score_q <- function(ds) {
     g <- ds %>%
         ggplot(aes(x=q)) +
-        geom_bar(aes(y = after_stat(count)), binwidth = 0.5, fill="#3b528b", color="#3b528b", alpha=0.5) +
+        geom_bar(aes(y = after_stat(count)), binwidth = 0.5, fill="#3b528b", color="#3b528b", alpha=0.2) +
         geom_text(aes(label = after_stat(count)), vjust = 2, stat = "count", size=8) +
         labs(
             x = "Valores de F score",
             y = "Quantidade de artigos"
         ) +
         theme_bw() +
-        theme(text = element_text(size = 25))
+        theme(text = element_text(size = 13))
     
     return (g)
 }
@@ -230,7 +230,7 @@ d_graphic_check <- function(ds) {
     g <- ds %>%
         ggplot(aes(x=check)) +
         scale_y_continuous(trans='log10') +
-        geom_histogram(aes(y = after_stat(count)), fill="#440154", color="#440154", alpha=0.5) +
+        geom_histogram(aes(y = after_stat(count)), fill="#440154", color="#440154", alpha=0.2) +
         labs(
             x = "Valores de ",
             y = "Quantidade de artigos"
@@ -337,8 +337,8 @@ get_graphic <- function(ds_metrics, g_path, csv_path) {
     #     d_graphic_f1score_q()
 
     #g_p <- plot_grid(vp, fp, fn, nrow = 1)
-    g <- plot_grid(vp, fp, fn, g_precision, g_recall, g_f1score, nrow = 2) %>%
-        graphics(g_path)
+    g <- plot_grid(vp, fp, fn, g_precision, g_recall, g_f1score, nrow = 3) %>%
+        graphics(g_path, width=30, height=25)
 }
 
 add_metrics_x <- function(ds) {

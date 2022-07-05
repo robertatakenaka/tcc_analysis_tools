@@ -48,10 +48,24 @@ ds_roc2 <- ds_connections %>%
         esperado=case_when(same==1 ~ 1, TRUE ~ 0),
         modelo=case_when(score >= 0.8 ~ 1, TRUE ~ 0))
 
+ds_roc25 <- ds_connections %>%
+    mutate(
+        esperado=case_when(same==1 ~ 1, TRUE ~ 0),
+        modelo=case_when(score >= 0.75 ~ 1, TRUE ~ 0))
+
 ds_roc3 <- ds_connections %>%
     mutate(
         esperado=case_when(same==1 ~ 1, TRUE ~ 0),
         modelo=case_when(score >= 0.7 ~ 1, TRUE ~ 0))
+
+ds_roc4 <- ds_connections %>%
+    mutate(
+        esperado=case_when(same==1 ~ 1, TRUE ~ 0),
+        modelo=case_when(score >= 0.65 ~ 1, TRUE ~ 0))
+ds_roc5 <- ds_connections %>%
+    mutate(
+        esperado=case_when(same==1 ~ 1, TRUE ~ 0),
+        modelo=case_when(score >= 0.6 ~ 1, TRUE ~ 0))
 
 # Fonte: statquest
 
@@ -59,21 +73,33 @@ par(pty="s")
 roc1 <- roc(ds_roc$esperado, ds_roc$modelo, plot=TRUE, legacy.axes=TRUE, percent=TRUE, 
   xlab="Especificidade | Porcentagem de falsos positivos | Não relevantes",
   ylab="Sensibilidade \n Porcentagem de verdadeiros positivos \n Relevantes",
-  col="#cc9652", lwd=4,
-  print.auc=TRUE
+  col="#cc9652", lwd=3,
+  print.auc=TRUE, print.auc.cex=0.8, print.auc.x = 21, print.auc.y=80
 )
 
-plot.roc(ds_roc$esperado, ds_roc1$modelo, percent=TRUE, col="#96528b", lwd=4, print.auc=TRUE,
-    add=TRUE, print.auc.y=43
+plot.roc(ds_roc$esperado, ds_roc1$modelo, percent=TRUE, col="#96528b", lwd=3, print.auc=TRUE, print.auc.cex=0.8,
+    add=TRUE, print.auc.x = 21, print.auc.y=75
 )
 
-plot.roc(ds_roc$esperado, ds_roc2$modelo, percent=TRUE, col="#3b528b", lwd=4, print.auc=TRUE,
-    add=TRUE, print.auc.y=37
+plot.roc(ds_roc$esperado, ds_roc2$modelo, percent=TRUE, col="#DD577A", lwd=3, print.auc=TRUE, print.auc.cex=0.8,
+    add=TRUE, print.auc.x = 21, print.auc.y=70
 )
 
-plot.roc(ds_roc$esperado, ds_roc3$modelo, percent=TRUE, col="#21918c", lwd=4, print.auc=TRUE,
-    add=TRUE, print.auc.y=31
+plot.roc(ds_roc$esperado, ds_roc25$modelo, percent=TRUE, col="#1822BC", lwd=3, print.auc=TRUE, print.auc.cex=0.8,
+    add=TRUE, print.auc.x = 21, print.auc.y=65
 )
+
+plot.roc(ds_roc$esperado, ds_roc3$modelo, percent=TRUE, col="#21918c", lwd=3, print.auc=TRUE, print.auc.cex=0.8,
+    add=TRUE, print.auc.x = 21, print.auc.y=60
+)
+
+plot.roc(ds_roc$esperado, ds_roc4$modelo, percent=TRUE, col="#FE5A27", lwd=3, print.auc=TRUE, print.auc.cex=0.8,
+    add=TRUE, print.auc.x = 21, print.auc.y=55
+)
+plot.roc(ds_roc$esperado, ds_roc5$modelo, percent=TRUE, col="#00AA4F", lwd=3, print.auc=TRUE, print.auc.cex=0.8,
+    add=TRUE, print.auc.x = 21, print.auc.y=50
+)
+
 
 legend(
     "bottomright",
@@ -81,10 +107,14 @@ legend(
         "coef similaridade >= 0.9",
         "coef similaridade >= 0.85",
         "coef similaridade >= 0.8",
-        "coef similaridade >= 0.7"
+        "coef similaridade >= 0.75",
+        "coef similaridade >= 0.7",
+        "coef similaridade >= 0.65",
+        "coef similaridade >= 0.6"
+
         ),
-    col=c("#cc9652", "#96528b", "#3b528b", "#21918c"),
-    lwd=4,
-    cex=0.5
+    col=c("#cc9652", "#96528b", "#DD577A", "#1822BC", "#21918c", "#FE5A27", "#00AA4F"),
+    lwd=3,
+    cex=0.75
 )
 
